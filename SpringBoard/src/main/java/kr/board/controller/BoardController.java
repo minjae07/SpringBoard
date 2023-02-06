@@ -1,13 +1,9 @@
 package kr.board.controller;
 
-import java.util.List; 
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -17,11 +13,10 @@ import kr.board.mapper.BoardMapper;
 
 @Controller
 public class BoardController {
-	// boardList.do
+	
 	@Autowired
-	private BoardMapper mapper;
-	// HandlerMapping
-
+	private BoardMapper boardMapper;
+	
 	@RequestMapping("/")
 	public String main() {
 		return "main";
@@ -29,43 +24,24 @@ public class BoardController {
 	
 	//@ResponseBody -> jackson-dtabind(객체를 -> JSON 데이터 포멧으로 변환)  
 	
+	@ResponseBody
 	@RequestMapping("/boardList.do")
-	public @ResponseBody List<Board> boardList(){	//@ResponseBody: JSON 사용시 사용
-		List<Board> list = mapper.getLists();
+	public List<Board> boardList(){	//@ResponseBody: JSON 사용시 사용
+		List<Board> list = boardMapper.getLists();
 		return list;	//JSON 데이터 형식으로 변환(API)해서 리턴(응답)하겠다.
 	}
-	@GetMapping("/boardForm.do")
-	public String boardForm() {
-		return "boardForm";
+	
+	@ResponseBody
+	@RequestMapping("/boardInsert.do")
+	public void boardInsert(Board vo) {
+		boardMapper.boardInsert(vo);	//등록 성공
 	}
-	@PostMapping("boardInsert.do")
-	public String boardInsert(Board vo) {	//title, content, writer => 파라메터 수집(Board)
-		mapper.boardInsert(vo);	//등록
-		return "redirect:/boardList.do"; //redirect
+	
+	@ResponseBody
+	@RequestMapping("/boardDelete.do")
+	public void boardDelete(@RequestParam("idx") int idx) {
+		boardMapper.boardDelete(idx);	//등록 성공
 	}
-	@GetMapping("/boardContent.do")
-	public String boardContent(@RequestParam("idx") int idx, Model model) { //model=객체바인딩, /idx로 넘어오므로 @RequestParam("idx") 생략 가능
-		Board vo =mapper.boardContent(idx);
-		//조회수 증가
-		mapper.boardCount(idx);
-		model.addAttribute("vo", vo);	//	${vo.idx}
-		
-		return "boardContent";
-	}
-	@GetMapping("boardDelete.do/{idx}")
-	public String boardDelete(@PathVariable("idx") int idx) {
-		mapper.boardDelete(idx);	//삭제
-		return "redirect:/boardList.do";
-	}
-	@GetMapping("boardUpdateForm.do/{idx}")
-	public String boardUpdateForm(@PathVariable("idx") int idx, Model model) {
-		Board vo =mapper.boardContent(idx);
-		model.addAttribute("vo", vo);
-		return "boardUpdate";	//boardUpdate.jsp 
-	}
-	@PostMapping("/boardUpdate.do")
-	public String boardUpdate(Board vo) {
-		mapper.boardUpdate(vo); //수정
-		return "redirect:/boardList.do";
-	}
+	
+	
 }

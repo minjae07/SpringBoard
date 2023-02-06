@@ -37,11 +37,21 @@
   		$.each(data, function(index,obj){
   			listHtml+="<tr>";
   			listHtml+="<td>"+obj.idx+"</td>";
-  			listHtml+="<td>"+obj.title+"</td>";
+  			listHtml+="<td><a href='javascript:goContent("+obj.idx+")'>"+obj.title+"</a></td>";
   			listHtml+="<td>"+obj.writer+"</td>";
   			listHtml+="<td>"+obj.indate+"</td>";
   			listHtml+="<td>"+obj.count+"</td>";
   			listHtml+="</tr>";	
+  			
+  			listHtml+="<tr id='content"+obj.idx+"' style='display:none'>";
+  			listHtml+="<td>내용</td>";
+  			listHtml+="<td colspan='4'>";
+  			listHtml+="<textarea readonly rows='7' class='form-control'>"+obj.content+"</textarea>";
+  			listHtml+="<br/>";
+  			listHtml+="<button class='btn btn-success btn-sm'>수정</button>&nbsp;";
+  			listHtml+="<button class='btn btn-warning btn-sm' onclick='goDelete("+obj.idx+")'>삭제</button>";
+  			listHtml+="</td>";
+  			listHtml+="</tr>";
   		} );
   		
   		listHtml+="<tr>";
@@ -52,6 +62,9 @@
   		listHtml+="</table>";	
   		//$(): 선택자, 무엇을 선택할때 사용
   		$("#view").html(listHtml);
+  		
+  	  $("#view").css("display","block");
+  	  $("#wfrom").css("display","none");
   	}
   	function goForm(){
   		$("#view").css("display","none");	//버튼 누를시 감춤
@@ -61,6 +74,50 @@
   		$("#view").css("display","block");	//버튼 누를시 감춤
   		$("#wfrom").css("display","none");
   	}
+	
+	function goInsert(){
+		//var title = $("#title").val();
+		//var content = $("#content").val();
+		//var writer = $("#writer").val();
+		
+		var fData=$("#frm").serialize();
+		
+		$.ajax({
+			url : "boardInsert.do",
+			type : "post",
+			data : fData,
+			success : loadList,
+			error : function() {
+				alert("error");
+			}
+			//alert("글이 등록되었습니다");
+		});
+		
+		//폼 초기화
+		//$("#title").val("");
+		//$("#content").val("");
+		//$("#writer").val("");
+		$("#fclear").trigger("click");
+	}
+	function goContent(idx){
+		if($("#content"+idx).css("display")=="none"){
+		$("#content"+idx).css("display","table-row");
+	}else{
+		$("#content"+idx).css("display","none");
+	}
+	}
+	function goDelete(idx){
+		$.ajax({
+			url : "boardDelete.do",
+			type : "get",
+			data : {"idx":idx},
+			success : loadList,
+			error : function() {
+				alert("error");
+			}
+		})
+	}
+	
   </script>
 </head>
 <body>
@@ -71,24 +128,24 @@
     <div class="panel-heading">BOARD</div>
     <div class="panel-body" id="view" >Panel Content</div>
     <div class="panel-body" id="wfrom" style="display: none">
-      <form action="boardInsert.do" method="post">
+      <form id="frm">
 					<table class="table">
 						<tr>
 							<td>제목</td>
-							<td><input type="text" name="title" class="form-control" /></td>
+							<td><input type="text" id="title" name="title" class="form-control" /></td>
 						</tr>
 						<tr>
 							<td>내용</td>
-							<td><textarea rows="7" class="form-control" name="content"></textarea></td>
+							<td><textarea rows="7" id="content" name="content" class="form-control"></textarea></td>
 						</tr>
 						<tr>
 							<td>작성자</td>
-							<td><input type="text" name="writer" class="form-control"/></td>
+							<td><input type="text" id="writer" name="writer" class="form-control"/></td>
 						</tr>
 						<tr>
 						<td colspan="2" align="center">
-						<button type="submit" class="btn btn-success btn-sm">등록</button>
-						<button type="reset" class="btn btn-warning btn-sm">취소</button>
+						<button type="button" class="btn btn-success btn-sm" onclick="goInsert()">등록</button>
+						<button type="reset" class="btn btn-warning btn-sm" id="fclear">취소</button>
 						<button type="button" class="btn btn-warning btn-sm" onclick="goList()">목록</button>
 						</tr>
 					</table>
@@ -100,4 +157,3 @@
 
 </body>
 </html>
-
