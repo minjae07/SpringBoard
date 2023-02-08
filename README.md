@@ -38,6 +38,7 @@
 |--|--|--|
 |23.02.01|boardCRUD 제작|v1.0|
 |23.02.02|Ajax 비동기 처리 추가|v1.1|
+|23.02.08|@RestController 작업|v1.2|
 
 </div>
 </details>
