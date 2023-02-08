@@ -18,7 +18,7 @@
   	function loadList() {
   		//서버와 통신 : 게시판 리스트 가져오기
   		$.ajax({
-  			url : "boardList.do", 
+  			url : "board/all", 
   			type : "get",
   			dataType : "json",
   			success : makeView,	//콜백 함수
@@ -39,7 +39,7 @@
   			listHtml+="<td>"+obj.idx+"</td>";
   			listHtml+="<td id='_title"+obj.idx+"'><a href='javascript:goContent("+obj.idx+")'>"+obj.title+"</a></td>";
   			listHtml+="<td>"+obj.writer+"</td>";
-  			listHtml+="<td>"+obj.indate+"</td>";
+  			listHtml+="<td>"+obj.indate.split(' ')[0]+"</td>";
   			listHtml+="<td id='_hit"+obj.idx+"'>"+obj.count+"</td>";
   			listHtml+="</tr>";
   			
@@ -83,7 +83,7 @@
 		var fData=$("#frm").serialize();
 		
 		$.ajax({
-			url : "boardInsert.do",
+			url : "board/new",
 			type : "post",
 			data : fData,
 			success : loadList,
@@ -101,16 +101,14 @@
 	}
 	function goContent(idx){
 		if($("#content"+idx).css("display")=="none"){
-			
-	
-		$.ajax({
-            url: "boardContent.do",
-            type: "get",
-            data: {"idx" : idx},
-            dataType : "json",
-            success: function(data){
-            	$("#_text"+idx).val(data.content);
-            },
+			$.ajax({
+        	    url: "board/"+idx,
+       	  		type: "get",
+      	 	   // data: {"idx" : idx},
+       	 	    dataType : "json",
+        	    success: function(data){
+       		     	$("#_text"+idx).val(data.content);
+          		  },
             error : function() {alert("error");}
         });	
 			
@@ -119,9 +117,10 @@
 	}else{
 		$("#content"+idx).css("display","none");	//감추기
 		$.ajax({
-			url : "boardCount.do",
-			type : "get",
-			data : { "idx" : idx},
+			url : "board/count/"+idx,
+			type : "put",
+			//type : "get",
+			//data : { "idx" : idx},
 			dataType : "json",
 			success : function(data) {
 				$("#_hit"+idx).text(data.count);
@@ -129,14 +128,15 @@
 			error : function() {
 				alert("error");
 			}
-		})
+		});
 	}
 	}
 	function goDelete(idx){
 		$.ajax({
-			url : "boardDelete.do",
-			type : "get",
-			data : {"idx":idx},
+			url : "board/"+idx,
+			type : "delete",
+			//type : "get",
+			//data : {"idx":idx},
 			success : loadList,
 			error : function() {alert("error");}
 		});
@@ -145,7 +145,7 @@
 		$("#_text"+idx).attr("readonly",false);	//텍스트 제거
 		var title = $("#_title"+idx).text();
 		 
-		var newInput="<input type='text' id='_newtText"+idx+"' class='form-control' value='"+title+"'/>"	
+		var newInput="<input type='text' id='_newtText"+idx+"' class='form-control' value='"+title+"'/>";	
 		$("#_title"+idx).html(newInput);	//제목 수정
 		
 		var newButton="<button class='btn btn-primary btn-sm' onclick='goUpdate("+idx+")'>수정</button>"
@@ -155,9 +155,10 @@
 		var title=$("#_newtText"+idx).val();
 		var content=$("#_text"+idx).val();
 		$.ajax({
-			url: "boardUpdate.do",
-			type : "post",
-			data : {"idx":idx,"title":title,"content":content},
+			url: "board/update",
+			type : "put",
+			contentType:'application/json;charset=utf-8',
+			data : JSON.stringify({"idx":idx,"title":title,"content":content}),
 			success : loadList,
 			error: function(){alert("error");}
 		})
@@ -194,7 +195,7 @@
 						<td colspan="2" align="center">
 						<button type="button" class="btn btn-success btn-sm" onclick="goInsert()">등록</button>
 						<button type="reset" class="btn btn-warning btn-sm" id="fclear">취소</button>
-						<button type="button" class="btn btn-warning btn-sm" onclick="goList()">목록</button>
+						<button type="button" class="btn btn-info btn-sm" onclick="goList()">목록</button>
 						</tr>
 					</table>
 				</form>
