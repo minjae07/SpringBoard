@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>  
+<c:set var="contextPath" value="${pageContext.request.contextPath}"/>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -12,13 +14,13 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 <body>
- 
 <div class="container">
-  <h2>Spring MVC01</h2>
+<jsp:include page="../common/header.jsp"/>
+  <h2>Spring MVC03</h2>
   <div class="panel panel-default">
-    <div class="panel-heading">BOARD</div>
+    <div class="panel-heading">Panel Heading</div>
     <div class="panel-body">Panel Content</div>
-    <div class="panel-footer">인프런_스프1탄_배민재</div>
+    <div class="panel-footer">스프1탄_인프런(배민재)</div>
   </div>
 </div>
 
