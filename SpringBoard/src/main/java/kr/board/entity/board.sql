@@ -20,3 +20,24 @@ values(board_idx.nextval, '스프링게시판','스프링게시판','배민재')
 insert into board(idx, title, content, writer)
 values(board_idx.nextval, '스프링게시판','스프링게시판','손님');
 select * from board order by idx desc
+
+
+
+create table member(
+  memIdx int, 
+  memID varchar(20) not null,  
+  memPassword varchar(20) not null,
+  memName varchar(20) not null,
+  memAge int,
+  memGender varchar(20),
+  memEmail varchar(50),
+  memProfile varchar(50),
+  primary key(memIdx)
+);
+
+create sequence member_idx;
+
+delete from member;
+
+select * from member;
+
