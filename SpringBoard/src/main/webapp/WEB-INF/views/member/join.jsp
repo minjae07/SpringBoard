@@ -13,39 +13,48 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
+
 <script type="text/javascript">
-	function registercheck(){
-		var memID=$("#memID").val();
-		$.ajax({
-			url : "${contextPath}/memRegisterCheck.do",
-			type : "get",
-			data : {"memID" : memID},
-			success : function(result) {
-				//중복 여부 출력 (result = 1 : 사용 가능, result = 0  사용 불가능)
-				if(result==1){
-					$("#checkMessage").html("사용할 수 있는 아이디 입니다.");
-					$("#checkType").attr("class","modal-content panel-success");
-				}else{
-					$("#checkMessage").html("이미 존재하거나 공백입니다. 다시 입력 해 주세요");
-					$("#checkType").attr("class","modal-content panel-warning");
-				}
-				$("#Modal").modal("show");
-			},
-			error : function(){
-				alert("error");
-			}
-		});
-		
-	}
+function registerCheck(){
+    var memID=$("#memID").val();
+        $.ajax({
+            url : "${contextPath}/memRegisterCheck.do",
+            type : "get",
+            data : {"memID" : memID},
+            success : function(result) {
+                //중복 여부 출력 (result = 1 : 사용 가능, result = 0  사용 불가능)
+                if(result==1){
+                    $("#checkMessage").html("사용할 수 있는 아이디 입니다.");
+                    $("#checkType").attr("class","modal-content panel-success");
+                }else{
+                    $("#checkMessage").html("이미 존재하거나 공백입니다. 다시 입력 해 주세요");
+                    $("#checkType").attr("class","modal-content panel-warning");
+                }
+                $("#modal").modal("show");
+            },
+            error : function(){alert("error");    }
+        });
+    }
+    function passwordCheck(){
+        var memPassword1=$("#memPassword1").val();
+        var memPassword2=$("#memPassword2").val();
+        if(memPassword1 != memPassword2){
+            $("#passMessage").html("비밀번호가 서로 일치하지 않습니다.");
+        }else{
+            $("#passMessage").html("");
+            $("#memPassword").val(memPassword1);
+        }
+    }
 </script>
 <body>
 <div class="container">
 <jsp:include page="../common/header.jsp"/>
   <h2>Spring MVC03</h2>
-  <div class="panel panel-default">
+  <div class="panel panel-default">   
     <div class="panel-heading">회원가입</div>
     <div class="panel-body">
     	<form action="${contextPath}/memRegister.do" method="post">
+    		<input type="hidden" id="memPassword" name="memPassword" value=""/>
     		<table class="table table-bordered" style="text-align: center; border: 1px solid;">
     		<tr>
     			<td style="width: 110px; vertical-align: middle;">아이디</td>
@@ -88,7 +97,7 @@
     		</tr>
     		<tr>
     			<td colspan="3" style="text-align: left;">
-    				<input type="submit" class="btn btn-primary btn-sm pull-right" value="등록"/>
+    				<span id="passMessage" style="color: red"></span> <input type="submit" class="btn btn-primary btn-sm pull-right" value="등록"/>
     			</td>
     		</tr> 
     		</table>
@@ -97,7 +106,7 @@
     <!-- 다이얼로그창(모달) -->
     
 <!-- Modal -->
-<div id="Modal" class="modal fade" role="dialog">
+<div id="modal" class="modal fade" role="dialog">
   <div class="modal-dialog">
 
     <!-- Modal content-->
