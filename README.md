@@ -19,7 +19,10 @@
 ### 2. 프로젝트 기능
 
 ### 3. 사용 기술
-
+- Spring MVC
+- Lombok API
+- Ajax
+- jQuery
 ##### 개발 환경
 - Java 11
 - Oracle
