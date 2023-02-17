@@ -19,14 +19,14 @@
 ### 2. 프로젝트 기능
 
 ### 3. 사용 기술
-- Spring MVC
-- Lombok API
-- Ajax
-- jQuery
+Frontend: javascript, jQuery, bootstrap, HTML/CSS
+Backend: Java, Spring framework
+Database: Oracle, SQL
+ETC: Apache Tomcat
+API: Lombok API, Mybatis API
 ##### 개발 환경
 - Java 11
 - Oracle
-- HTML, CSS, Javascript, JQuery, Ajax
 - Aache Tomcat 8.5
 - Eclipse
 
