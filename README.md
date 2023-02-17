@@ -6,8 +6,6 @@
   - [프로젝트 소개](#1-프로젝트-소개)    
   - [기능](#2-기능)    
   - [사용 기술](#3-사용-기술)   
-     - [백엔드](#3-1-백엔드)
-     - [프론트엔드](#3-2-프론트엔드)
 
 
 
@@ -19,11 +17,11 @@
 ### 2. 프로젝트 기능
 
 ### 3. 사용 기술
-Frontend: javascript, jQuery, bootstrap, HTML/CSS
-Backend: Java, Spring framework
-Database: Oracle, SQL
-ETC: Apache Tomcat
-API: Lombok API, Mybatis API
+- Frontend: javascript, jQuery, bootstrap, HTML/CSS
+- Backend: Java, Spring framework
+- Database: Oracle, SQL
+- ETC: Apache Tomcat
+- API: Lombok API, Mybatis API
 ##### 개발 환경
 - Java 11
 - Oracle
