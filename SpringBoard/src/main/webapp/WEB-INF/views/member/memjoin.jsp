@@ -33,7 +33,7 @@ function registerCheck(){
                     $("#checkMessage").html("사용할 수 있는 아이디 입니다.");
                     $("#checkType").attr("class","modal-content panel-success");
                 }else{
-                    $("#checkMessage").html("이미 존재하거나 공백입니다. 다시 입력 해 주세요");
+                    $("#checkMessage").html("사용할 수 없는 아이디입니다.");
                     $("#checkType").attr("class","modal-content panel-warning");
                 }
                 $("#modal").modal("show");
@@ -154,7 +154,7 @@ function registerCheck(){
 	    </div>	
 	  </div>
 	</div>    
-    <div class="panel-footer">스프1탄_인프런(배민재)</div>
+    <div class="panel-footer">스프1탄_인프런_배민재</div>
   </div>
 </div>
 </body>
